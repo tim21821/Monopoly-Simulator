@@ -2,6 +2,7 @@ import numpy as np
 import random
 import pandas as pd
 from numba import njit
+from tqdm import tqdm
 
 random.seed()
 
@@ -131,10 +132,10 @@ def main(dice_rolls, iterations):
         return board_visited
 
     data = pd.DataFrame({"Straße": FELDER})
-    for i in range(iterations):
+    for i in tqdm(range(iterations)):
         data[f"Lauf {i+1}"] = simulation(dice_rolls)
     data.to_csv("ergebnisse.csv", index=False)
 
 
 if __name__ == "__main__":
-    main(150, 5_000)
+    main(150, 10_000)
