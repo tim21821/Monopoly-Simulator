@@ -1,7 +1,6 @@
 import numpy as np
 import random
 import pandas as pd
-import time
 from numba import njit
 
 random.seed()
@@ -100,6 +99,7 @@ def main(dice_rolls, iterations):
             position += score
             position %= NUM_FIELDS
             board_visited[position] += 1
+
             if position == 30:
                 position = 10
                 board_visited[position] += 1
@@ -137,7 +137,4 @@ def main(dice_rolls, iterations):
 
 
 if __name__ == "__main__":
-    start = time.time()
-    main(100, 1_000)
-    end = time.time()
-    print(f"Der Lauf dauerte {end-start} Sekunden!")
+    main(150, 5_000)
