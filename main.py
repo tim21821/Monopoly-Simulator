@@ -91,6 +91,8 @@ def main(dice_rolls, iterations):
         board_visited = np.zeros(NUM_FIELDS).astype(np.int32)
         position = 0
         j = 0
+
+        # Karten mischen
         ereignis_karten_shuffle = EREIGNIS_KARTEN.copy()
         gemeinschaft_karten_shuffle = GEMEINSCHAFT_KARTEN.copy()
         np.random.shuffle(ereignis_karten_shuffle)
@@ -101,32 +103,42 @@ def main(dice_rolls, iterations):
             position %= NUM_FIELDS
             board_visited[position] += 1
 
+            # "Gehen Sie in das Gefängnis"
             if position == 30:
                 position = 10
                 board_visited[position] += 1
+
+            # Ereigniskarte ziehen
             elif position in EREIGNIS:
                 card, ereignis_karten_shuffle = (
                     ereignis_karten_shuffle[-1],
                     ereignis_karten_shuffle[:-1],
                 )
+                # Karte, die für Bewegung sorgt
                 if card >= 0:
                     position = card
                     board_visited[position] += 1
+                # Wenn Deck leer, neu mischen
                 if len(ereignis_karten_shuffle) == 0:
                     ereignis_karten_shuffle = EREIGNIS_KARTEN.copy()
                     np.random.shuffle(ereignis_karten_shuffle)
+
+            # Gemeinschaftkarte ziehen
             elif position in GEMEINSCHAFT:
                 card, gemeinschaft_karten_shuffle = (
                     gemeinschaft_karten_shuffle[-1],
                     gemeinschaft_karten_shuffle[:-1],
                 )
+                # Karte, die für Bewegung sorgt
                 if card >= 0:
                     position = card
                     board_visited[position] += 1
+                # Wenn Deck leer, neu mischen
                 if len(gemeinschaft_karten_shuffle) == 0:
                     gemeinschaft_karten_shuffle = GEMEINSCHAFT_KARTEN.copy()
                     np.random.shuffle(gemeinschaft_karten_shuffle)
 
+            # Nächste Runde, wenn kein Pasch geworfen wurde
             if not double:
                 j += 1
         return board_visited
@@ -138,4 +150,4 @@ def main(dice_rolls, iterations):
 
 
 if __name__ == "__main__":
-    main(150, 10_000)
+    main(150, 50_000)
