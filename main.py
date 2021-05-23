@@ -4,15 +4,13 @@ import pandas as pd
 from numba import njit
 from tqdm import tqdm
 
-random.seed()
-
 NUM_FIELDS = 40
-EREIGNIS = np.array([7, 22, 36])
-EREIGNIS_KARTEN = np.array(
+EREIGNIS = np.int8([7, 22, 36])
+EREIGNIS_KARTEN = np.int8(
     [39, 5, -1, 34, 12, 10, 0, -1, -1, -1, 11, -1, -1, -1, -1, -1]
 )
-GEMEINSCHAFT = np.array([2, 17, 33])
-GEMEINSCHAFT_KARTEN = np.array(
+GEMEINSCHAFT = np.int8([2, 17, 33])
+GEMEINSCHAFT_KARTEN = np.int8(
     [
         -1,
         -1,
@@ -88,7 +86,7 @@ def main(dice_rolls, iterations):
 
     @njit
     def simulation(dice_rolls):
-        board_visited = np.zeros(NUM_FIELDS).astype(np.int32)
+        board_visited = np.zeros(NUM_FIELDS).astype(np.uint8)
         position = 0
         j = 0
 
@@ -97,6 +95,7 @@ def main(dice_rolls, iterations):
         gemeinschaft_karten_shuffle = GEMEINSCHAFT_KARTEN.copy()
         np.random.shuffle(ereignis_karten_shuffle)
         np.random.shuffle(gemeinschaft_karten_shuffle)
+
         while j < dice_rolls:
             score, double = roll_dice()
             position += score
@@ -150,4 +149,5 @@ def main(dice_rolls, iterations):
 
 
 if __name__ == "__main__":
+    random.seed()
     main(150, 50_000)
