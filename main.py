@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import pandas as pd
+import time
 
 random.seed()
 
@@ -77,9 +78,10 @@ def roll_dice():
     return (first_dice + second_dice, first_dice == second_dice)
 
 
-def simulate(dice_rolls, iterations):
+def main(dice_rolls, iterations):
     data = pd.DataFrame({"Straße": FELDER})
-    for i in range(iterations):
+
+    def simulation(dice_rolls):
         board_visited = np.zeros(NUM_FIELDS).astype("int32")
         position = 0
         j = 0
@@ -114,9 +116,15 @@ def simulate(dice_rolls, iterations):
 
             if not double:
                 j += 1
-        data[f"Lauf {i+1}"] = board_visited
+        return board_visited
+
+    for i in range(iterations):
+        data[f"Lauf {i+1}"] = simulation(dice_rolls)
     data.to_csv("ergebnisse.csv", index=False)
 
 
 if __name__ == "__main__":
-    simulate(100, 1000)
+    start = time.time()
+    main(100, 1000)
+    end = time.time()
+    print(f"Der Lauf dauerte {end-start} Sekunden!")
