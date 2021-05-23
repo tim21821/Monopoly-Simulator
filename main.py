@@ -27,6 +27,48 @@ GEMEINSCHAFT_KARTEN = [
     0,
     -1,
 ]
+FELDER = [
+    "Los",
+    "Badstraße",
+    "Gemeinschaft 1",
+    "Turmstraße",
+    "Einkommenssteuer",
+    "Südbahnhof",
+    "Chausseestraße",
+    "Ereignis 1",
+    "Elisenstraße",
+    "Poststraße",
+    "Gefängnis",
+    "Seestraße",
+    "Elektrizitätswerk",
+    "Hafenstraße",
+    "Neue Straße",
+    "Westbahnhof",
+    "Münchner Straße",
+    "Gemeinschaft 2",
+    "Wiener Straße",
+    "Berliner Straße",
+    "Frei Parken",
+    "Theaterstraße",
+    "Ereignis 2",
+    "Museumstraße",
+    "Opernplatz",
+    "Nordbahnhof",
+    "Lessingstraße",
+    "Schillerstraße",
+    "Wasserwerk",
+    "Goethestraße",
+    "Gehe in Gefängnis",
+    "Rathausplatz",
+    "Hauptstraße",
+    "Gemeinschaft 3",
+    "Bahnhofstraße",
+    "Hauptbahnhof",
+    "Ereignis 3",
+    "Parkstraße",
+    "Zusatzsteuer",
+    "Schlossallee",
+]
 
 
 def roll_dice():
@@ -36,6 +78,7 @@ def roll_dice():
 
 
 def simulate(dice_rolls, iterations):
+    data = pd.DataFrame({"Straße": FELDER})
     for i in range(iterations):
         board_visited = np.zeros(NUM_FIELDS).astype("int32")
         position = 0
@@ -71,11 +114,9 @@ def simulate(dice_rolls, iterations):
 
             if not double:
                 j += 1
-        csv = pd.read_csv("ergebnisse.csv")
-        csv[f"Lauf {i+1}"] = board_visited
-        csv.to_csv("ergebnisse.csv", index=False)
+        data[f"Lauf {i+1}"] = board_visited
+    data.to_csv("ergebnisse.csv", index=False)
 
 
 if __name__ == "__main__":
-    simulate(100, 5)
-    print("run finished!")
+    simulate(100, 1000)
