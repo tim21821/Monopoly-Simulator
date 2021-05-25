@@ -85,7 +85,7 @@ def main(dice_rolls=150, iterations=50_000):
         return (first_dice + second_dice, first_dice == second_dice)
 
     @njit
-    def simulation(dice_rolls):
+    def simulate_game(dice_rolls):
         board_visited = np.zeros(NUM_FIELDS).astype(np.uint8)
         position = 0
         j = 0
@@ -144,7 +144,7 @@ def main(dice_rolls=150, iterations=50_000):
 
     data = pd.DataFrame({"Straße": FELDER})
     for i in tqdm(range(iterations)):
-        data[f"Lauf {i+1}"] = simulation(dice_rolls)
+        data[f"Lauf {i+1}"] = simulate_game(dice_rolls)
     data.to_csv("ergebnisse.csv", index=False)
 
 
