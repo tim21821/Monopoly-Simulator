@@ -77,7 +77,7 @@ FELDER = np.array(
 )
 
 
-def main(dice_rolls, iterations):
+def main(dice_rolls=150, iterations=50_000):
     @njit
     def roll_dice():
         first_dice = random.randint(1, 6)
@@ -150,4 +150,6 @@ def main(dice_rolls, iterations):
 
 if __name__ == "__main__":
     random.seed()
-    main(150, 50_000)
+    dice_rolls = int(input("Wie oft soll der Würfel pro Spiel geworfen werden? "))
+    iterations = int(input("Wie viele Spiele sollen simuliert werden? "))
+    main(dice_rolls, iterations)
